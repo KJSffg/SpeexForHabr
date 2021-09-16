@@ -416,13 +416,14 @@ int nb_encode(void *state, void *vin, SpeexBits *bits)
    SUBMODE(lsp_quant)(lsp, qlsp, st->lpcSize, bits);  
    
    /*Quantize and transmit open-loop excitation gain*/
+#ifdef FIXED_POINT
    {
       int qe = scal_quant32(ol_gain, ol_gain_table, 32);
       /*ol_gain = exp(qe/3.5)*SIG_SCALING;*/
       ol_gain = MULT16_32_Q15(28406,ol_gain_table[qe]);
       speex_bits_pack(bits, qe, 5);
    }
-
+#endif
 
 
 
